@@ -1,0 +1,28 @@
+name: Auto Create PR
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create Pull Request
+        uses: repo-sync/pull-request@v2
+        with:
+          source_branch: ${{ github.ref_name }}
+          destination_branch: "main"
+          pr_title: "Merge ${{ github.ref_name }} into main"
+          pr_body: "Automated PR created from branch `${{ github.ref_name }}`. Please review and use **Squash and merge**."
+          github_token: ${{ secrets.GITHUB_TOKEN }}
