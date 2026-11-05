@@ -1,5 +1,11 @@
 import { projectsData } from "@/lib/data";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Projects",
+  description: "Selected technical projects by Aditya Waradkar.",
+};
 
 export default function Projects() {
   return (

@@ -10,8 +10,31 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: 'sw
 const ibmPlexMono = IBM_Plex_Mono({ weight: ["400", "500"], subsets: ["latin"], variable: "--font-ibm-plex-mono", display: 'swap' });
 
 export const metadata: Metadata = {
-  title: "Aditya Waradkar",
-  description: "Computer engineer. Pencil artist. Listener of many things.",
+  title: {
+    default: "Aditya Waradkar | DevOps & Cloud Engineer",
+    template: "%s | Aditya Waradkar",
+  },
+  description: "Computer engineer specializing in DevOps and Cloud infrastructure. Pencil artist. Listener of many things.",
+  keywords: ["Aditya Waradkar", "DevOps Engineer", "Cloud Engineer", "Portfolio", "Pencil Artist", "Go Developer"],
+  authors: [{ name: "Aditya Waradkar" }],
+  creator: "Aditya Waradkar",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://adityawaradkar.dev",
+    title: "Aditya Waradkar | DevOps & Cloud Engineer",
+    description: "Computer engineer specializing in DevOps and Cloud infrastructure. Pencil artist. Listener of many things.",
+    siteName: "Aditya Waradkar",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Aditya Waradkar | DevOps & Cloud Engineer",
+    description: "Computer engineer specializing in DevOps and Cloud infrastructure. Pencil artist. Listener of many things.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

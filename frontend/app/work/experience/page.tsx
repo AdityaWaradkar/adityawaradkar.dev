@@ -1,4 +1,10 @@
 import { experienceData } from "@/lib/data";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Experience",
+  description: "Professional timeline and work experience of Aditya Waradkar.",
+};
 
 export default function Experience() {
   return (
