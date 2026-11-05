@@ -23,9 +23,14 @@
     background-color: var(--color-cream);
     color: var(--color-brown-deep);
     font-family: var(--font-sans);
+    /* Makes text render sharper */
+    -webkit-font-smoothing: antialiased; 
+    -moz-osx-font-smoothing: grayscale;
   }
   
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-serif);
+    /* Tighter tracking makes serif headings look more modern and bold */
+    letter-spacing: -0.02em; 
   }
 }
