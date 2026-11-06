@@ -34,7 +34,24 @@ export default function RecentTracks() {
   }
 
   if (tracks.length === 0) {
-    return <div className="text-brown-mid italic py-12">No recent tracks found. Listen to something on Spotify first!</div>;
+    return (
+      <div className="border border-brown-light/30 rounded-lg p-8 bg-cream flex flex-col items-center justify-center text-center">
+        <p className="text-brown-mid text-sm mb-4">
+          Spotify listening data is currently unavailable.
+        </p>
+        <p className="text-brown-light text-xs font-mono">
+          (Token may need refreshing)
+        </p>
+        <a 
+          href="https://open.spotify.com/user/adityawaradkar" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="mt-6 text-accent font-mono text-sm hover:underline underline-offset-4"
+        >
+          View Profile on Spotify ↗
+        </a>
+      </div>
+    );
   }
 
   return (
