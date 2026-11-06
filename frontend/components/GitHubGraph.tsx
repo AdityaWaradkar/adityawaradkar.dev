@@ -46,8 +46,15 @@ export default function GitHubGraph() {
 
   if (!data) {
     return (
-      <div className="h-32 flex items-center justify-center font-mono text-sm text-red-500 border border-red-200 rounded-lg bg-red-50">
-        Failed to load GitHub data.
+      <div className="w-full border border-brown-light/30 rounded-lg p-6 bg-cream shadow-sm flex flex-col items-center justify-center text-center py-12">
+        <p className="font-mono text-sm text-brown-light mb-2">GitHub Activity</p>
+        <p className="text-brown-mid text-sm">
+          Contribution data is currently unavailable. 
+          <br />
+          <a href="https://github.com/AdityaWaradkar" target="_blank" rel="noopener noreferrer" className="text-accent underline underline-offset-4 mt-2 inline-block">
+            View profile directly on GitHub ↗
+          </a>
+        </p>
       </div>
     );
   }

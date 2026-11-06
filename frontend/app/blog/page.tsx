@@ -52,7 +52,19 @@ export default async function Blog() {
       </div>
 
       {posts.length === 0 ? (
-        <p className="text-brown-mid italic">No posts found. Ensure the Go backend is running.</p>
+        <div className="border border-brown-light/30 rounded-lg p-8 bg-cream flex flex-col items-center justify-center text-center">
+          <p className="text-brown-mid text-sm mb-4">
+            Recent blog posts are currently unavailable.
+          </p>
+          <a 
+            href="https://medium.com/@adityawaradkar.learning" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-accent font-mono text-sm hover:underline underline-offset-4"
+          >
+            Read directly on Medium ↗
+          </a>
+        </div>
       ) : (
         <div className="flex flex-col border-t border-brown-light/30 max-w-3xl">
           {posts.map((post, index) => (
