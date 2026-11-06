@@ -92,6 +92,14 @@ type SpotifyRecentResponse struct {
 	} `json:"items"`
 }
 
+// Structs for Contact Form
+type ContactRequest struct {
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Message  string `json:"message"`
+	Honeypot string `json:"honeypot"` // Spam prevention
+}
+
 func getSpotifyAccessToken() (string, error) {
 	clientID := os.Getenv("SPOTIFY_CLIENT_ID")
 	clientSecret := os.Getenv("SPOTIFY_CLIENT_SECRET")
@@ -228,6 +236,57 @@ func main() {
 
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(tracks)
+	})
+
+	// 5. Contact Form
+	mux.HandleFunc("POST /api/contact", func(w http.ResponseWriter, r *http.Request) {
+		var req ContactRequest
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			http.Error(w, "Invalid request payload", http.StatusBadRequest)
+			return
+		}
+
+		// Honeypot check (if this field is filled, it's a bot)
+		if req.Honeypot != "" {
+			// Pretend it succeeded so the bot doesn't know it failed
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Basic validation
+		if req.Name == "" || req.Email == "" || req.Message == "" {
+			http.Error(w, "Missing required fields", http.StatusBadRequest)
+			return
+		}
+
+		// Send via Resend
+		apiKey := os.Getenv("RESEND_API_KEY")
+		if apiKey == "" {
+			http.Error(w, "Email service not configured", http.StatusInternalServerError)
+			return
+		}
+
+		resendPayload := map[string]interface{}{
+			"from":    "Portfolio Contact <onboarding@resend.dev>",
+			"to":      []string{"adityawaradkar2004@gmail.com"},
+			"subject": "New message from " + req.Name,
+			"html":    "<p><strong>Name:</strong> " + req.Name + "</p><p><strong>Email:</strong> " + req.Email + "</p><p><strong>Message:</strong></p><p>" + req.Message + "</p>",
+		}
+
+		payloadBytes, _ := json.Marshal(resendPayload)
+		resendReq, _ := http.NewRequest("POST", "https://api.resend.com/emails", bytes.NewBuffer(payloadBytes))
+		resendReq.Header.Set("Authorization", "Bearer "+apiKey)
+		resendReq.Header.Set("Content-Type", "application/json")
+
+		client := &http.Client{Timeout: 10 * time.Second}
+		resp, err := client.Do(resendReq)
+		if err != nil || resp.StatusCode >= 400 {
+			http.Error(w, "Failed to send email", http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]string{"status": "success"})
 	})
 
 	port := ":8080"
