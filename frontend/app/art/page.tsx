@@ -2,14 +2,31 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { artData } from "@/lib/artData";
+import { artData, ArtPiece } from "@/lib/artData";
+import Lightbox from "@/components/Lightbox";
 
 export default function Art() {
   const [filter, setFilter] = useState<"all" | "sketches" | "paintings">("all");
+  const [selectedPiece, setSelectedPiece] = useState<ArtPiece | null>(null);
 
   const filteredArt = artData.filter(
     (piece) => filter === "all" || piece.category === filter
   );
+
+  // Logic to find the next/previous piece within the *filtered* list
+  const handleNext = () => {
+    if (!selectedPiece) return;
+    const currentIndex = filteredArt.findIndex((p) => p.id === selectedPiece.id);
+    const nextIndex = (currentIndex + 1) % filteredArt.length;
+    setSelectedPiece(filteredArt[nextIndex]);
+  };
+
+  const handlePrev = () => {
+    if (!selectedPiece) return;
+    const currentIndex = filteredArt.findIndex((p) => p.id === selectedPiece.id);
+    const prevIndex = (currentIndex - 1 + filteredArt.length) % filteredArt.length;
+    setSelectedPiece(filteredArt[prevIndex]);
+  };
 
   return (
     <div className="max-w-content mx-auto px-6 py-24 min-h-[70vh]">
@@ -47,9 +64,9 @@ export default function Art() {
           <div 
             key={piece.id} 
             className="group flex flex-col gap-4 cursor-pointer"
-            onClick={() => alert(`Lightbox for ${piece.title} will open here in the next section!`)}
+            onClick={() => setSelectedPiece(piece)}
           >
-            <div className="relative aspect-[4/5] overflow-hidden rounded-md bg-brown-light/10">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-md bg-brown-light/10 border border-brown-light/20">
               <Image
                 src={piece.imageUrl}
                 alt={piece.title}
@@ -71,6 +88,14 @@ export default function Art() {
           </div>
         ))}
       </div>
+
+      {/* The Lightbox Component */}
+      <Lightbox 
+        piece={selectedPiece} 
+        onClose={() => setSelectedPiece(null)} 
+        onNext={handleNext}
+        onPrev={handlePrev}
+      />
     </div>
   );
 }
