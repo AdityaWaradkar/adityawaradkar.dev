@@ -6,6 +6,7 @@ services:
       - "8080:8080"
     environment:
       - ENV=development
+      - GITHUB_TOKEN=${GITHUB_TOKEN} # Add this line
     restart: unless-stopped
 
   frontend:
