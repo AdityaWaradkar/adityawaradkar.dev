@@ -14,10 +14,11 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:8080
+      # Change localhost to the service name "backend"
+      - NEXT_PUBLIC_API_URL=http://backend:8080
     volumes:
       - ./frontend:/app
-      - /app/node_modules # Prevents local OS node_modules from breaking the container
+      - /app/node_modules
       - /app/.next
     depends_on:
       - backend

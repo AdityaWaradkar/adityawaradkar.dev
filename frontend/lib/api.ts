@@ -1,7 +1,7 @@
 // frontend/lib/api.ts
 
-// Fallback to localhost:8080 if the environment variable isn't set
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+// Fallback to the Docker service name if the environment variable isn't set
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://backend:8080';
 
 export async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const url = `${API_URL}${endpoint}`;
