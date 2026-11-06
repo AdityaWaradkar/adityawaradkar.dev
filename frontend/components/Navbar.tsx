@@ -1,3 +1,4 @@
+// frontend/components/Navbar.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -23,6 +24,7 @@ export default function Navbar() {
     { name: "Music", href: "/music" },
     { name: "Books", href: "/books" },
     { name: "Blog", href: "/blog" },
+    { name: "Contact", href: "/contact" }, // Added Contact here
   ];
 
   return (
@@ -37,7 +39,8 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex gap-8">
+        {/* Changed gap-8 to gap-6 to fit the extra link */}
+        <nav className="hidden md:flex gap-6">
           {links.map((link) => (
             <Link
               key={link.name}
