@@ -6,7 +6,10 @@ services:
       - "8080:8080"
     environment:
       - ENV=development
-      - GITHUB_TOKEN=${GITHUB_TOKEN} # Add this line
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
+      - SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}
+      - SPOTIFY_REFRESH_TOKEN=${SPOTIFY_REFRESH_TOKEN}
     restart: unless-stopped
 
   frontend:
@@ -15,7 +18,6 @@ services:
     ports:
       - "3000:3000"
     environment:
-      # Change localhost to the service name "backend"
       - NEXT_PUBLIC_API_URL=http://backend:8080
     volumes:
       - ./frontend:/app
