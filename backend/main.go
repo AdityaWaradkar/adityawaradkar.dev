@@ -1,11 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"encoding/xml"
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -40,12 +42,34 @@ type Item struct {
 	Description string `xml:"description"`
 }
 
-// Clean JSON response struct
 type BlogPost struct {
-	Title     string `json:"title"`
-	Link      string `json:"link"`
-	Date      string `json:"date"`
-	Excerpt   string `json:"excerpt"`
+	Title   string `json:"title"`
+	Link    string `json:"link"`
+	Date    string `json:"date"`
+	Excerpt string `json:"excerpt"`
+}
+
+// GitHub GraphQL Structs
+type GitHubQuery struct {
+	Query string `json:"query"`
+}
+
+type GitHubResponse struct {
+	Data struct {
+		User struct {
+			ContributionsCollection struct {
+				ContributionCalendar struct {
+					TotalContributions int `json:"totalContributions"`
+					Weeks              []struct {
+						ContributionDays []struct {
+							ContributionCount int    `json:"contributionCount"`
+							Date              string `json:"date"`
+						} `json:"contributionDays"`
+					} `json:"weeks"`
+				} `json:"contributionCalendar"`
+			} `json:"contributionsCollection"`
+		} `json:"user"`
+	} `json:"data"`
 }
 
 func main() {
@@ -59,10 +83,9 @@ func main() {
 		})
 	})
 
-	// New Medium RSS Endpoint
+	// Medium RSS Endpoint
 	mux.HandleFunc("GET /api/blog", func(w http.ResponseWriter, r *http.Request) {
-		// TODO: Replace this URL with your actual Medium feed (e.g., https://medium.com/feed/@adityawaradkar)
-		feedURL := "https://medium.com/feed/@adityawaradkar.learning" 
+		feedURL := "https://medium.com/feed/@adityawaradkar.learning"
 		
 		client := http.Client{Timeout: 10 * time.Second}
 		resp, err := client.Get(feedURL)
@@ -85,7 +108,6 @@ func main() {
 		}
 
 		var posts []BlogPost
-		// Limit to the 5 most recent posts to keep the payload small
 		limit := 5
 		if len(rss.Channel.Items) < limit {
 			limit = len(rss.Channel.Items)
@@ -97,13 +119,62 @@ func main() {
 				Title:   item.Title,
 				Link:    item.Link,
 				Date:    item.PubDate,
-				// For a real implementation, we would strip HTML tags from the description
 				Excerpt: "Click to read the full article on Medium.", 
 			})
 		}
 
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(posts)
+	})
+
+	// GitHub Contributions Endpoint
+	mux.HandleFunc("GET /api/github", func(w http.ResponseWriter, r *http.Request) {
+		token := os.Getenv("GITHUB_TOKEN")
+		if token == "" {
+			http.Error(w, "GitHub token not configured", http.StatusInternalServerError)
+			return
+		}
+
+		query := GitHubQuery{
+			Query: `query { 
+				user(login: "AdityaWaradkar") { 
+					contributionsCollection { 
+						contributionCalendar { 
+							totalContributions 
+							weeks { 
+								contributionDays { 
+									contributionCount 
+									date 
+								} 
+							} 
+						} 
+					} 
+				} 
+			}`,
+		}
+
+		jsonData, _ := json.Marshal(query)
+		req, _ := http.NewRequest("POST", "https://api.github.com/graphql", bytes.NewBuffer(jsonData))
+		req.Header.Set("Authorization", "bearer "+token)
+		req.Header.Set("Content-Type", "application/json")
+
+		client := &http.Client{Timeout: 10 * time.Second}
+		resp, err := client.Do(req)
+		if err != nil {
+			http.Error(w, "Failed to fetch from GitHub", http.StatusInternalServerError)
+			return
+		}
+		defer resp.Body.Close()
+
+		body, _ := io.ReadAll(resp.Body)
+		var ghResp GitHubResponse
+		if err := json.Unmarshal(body, &ghResp); err != nil {
+			http.Error(w, "Failed to parse GitHub response", http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(ghResp.Data.User.ContributionsCollection.ContributionCalendar)
 	})
 
 	port := ":8080"

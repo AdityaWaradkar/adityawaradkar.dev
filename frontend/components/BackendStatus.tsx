@@ -1,4 +1,3 @@
-// frontend/components/BackendStatus.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -16,6 +15,7 @@ export default function BackendStatus() {
   useEffect(() => {
     async function checkHealth() {
       try {
+        // This will now correctly hit http://localhost:8080 in the browser
         const result = await fetchApi<HealthResponse>("/api/health");
         setData(result);
         setStatus("success");

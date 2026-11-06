@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import GitHubGraph from "@/components/GitHubGraph";
 
 export const metadata: Metadata = {
   title: "About",
@@ -67,6 +68,11 @@ export default function About() {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* GitHub Graph Inserted Here */}
+          <div className="mt-12">
+            <GitHubGraph />
           </div>
         </div>
 
