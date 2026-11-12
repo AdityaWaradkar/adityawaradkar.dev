@@ -44,11 +44,10 @@ export default async function Blog() {
           07 — Blog
         </span>
         <h1 className="text-5xl md:text-7xl font-serif text-brown-deep tracking-tight mb-6">
-          Writing.
+          Technical Writingclea
         </h1>
         <p className="text-lg text-brown-mid">
-          Thoughts on technical things. 
-          All articles are published on Medium.
+          Thoughts on technical things. All articles are published on Medium.
         </p>
       </div>
 
@@ -68,40 +67,46 @@ export default async function Blog() {
         </div>
       ) : (
         <div className="flex flex-col gap-12">
-          {/* Featured Post (First One) */}
+          
+          {/* Featured Post */}
           {featuredPost && (
             <Link 
               href={featuredPost.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="group grid grid-cols-1 md:grid-cols-2 gap-8 items-center border border-brown-light/20 rounded-xl overflow-hidden hover:shadow-md transition-all bg-cream"
+              className="group grid grid-cols-1 md:grid-cols-2 gap-0 border border-brown-light/30 rounded-xl overflow-hidden hover:shadow-md transition-all bg-cream"
             >
-              <div className="relative w-full aspect-video md:aspect-auto md:h-[400px] bg-brown-light/10">
+              {/* Featured Image Container */}
+              <div className="relative w-full aspect-video md:aspect-auto md:h-full min-h-[300px] md:min-h-[400px] bg-[#F5F2EB] border-b md:border-b-0 md:border-r border-brown-light/20 p-6">
                 {featuredPost.thumbnail ? (
                   <Image
                     src={featuredPost.thumbnail}
                     alt={featuredPost.title}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    // Changed to object-contain to prevent cutting
+                    className="object-contain group-hover:scale-105 transition-transform duration-700"
                   />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center font-mono text-xs text-brown-light">No Image</div>
                 )}
               </div>
               
-              <div className="p-8 md:pr-12 flex flex-col justify-center">
+              {/* Featured Content */}
+              <div className="p-8 md:p-12 flex flex-col justify-center">
                 <span className="font-mono text-xs text-accent uppercase tracking-wider mb-4 block">
                   Latest Article
                 </span>
-                <h2 className="text-3xl md:text-4xl font-serif text-brown-deep group-hover:text-accent transition-colors leading-tight mb-4">
+                <h2 className="text-3xl md:text-4xl font-serif text-brown-deep group-hover:text-accent transition-colors leading-[1.2] mb-6">
                   {featuredPost.title}
                 </h2>
-                <p className="text-brown-mid mb-6 line-clamp-2">
+                <p className="text-brown-mid mb-8 line-clamp-3 leading-relaxed">
                   {featuredPost.excerpt}
                 </p>
-                <div className="flex items-center justify-between mt-auto pt-4 border-t border-brown-light/20">
+                <div className="flex items-center justify-between mt-auto pt-6 border-t border-brown-light/20">
                   <span className="font-mono text-sm text-brown-light">{formatDate(featuredPost.date)}</span>
-                  <span className="font-mono text-sm text-brown-deep group-hover:text-accent transition-colors">Read on Medium ↗</span>
+                  <span className="font-mono text-sm text-brown-deep group-hover:text-accent transition-colors flex items-center gap-2">
+                    Read on Medium <span className="text-lg">↗</span>
+                  </span>
                 </div>
               </div>
             </Link>
@@ -115,26 +120,29 @@ export default async function Blog() {
                 href={post.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col border border-brown-light/20 rounded-xl overflow-hidden hover:shadow-md transition-all bg-cream"
+                className="group flex flex-col border border-brown-light/30 rounded-xl overflow-hidden hover:shadow-md transition-all bg-cream"
               >
-                <div className="relative w-full aspect-[16/9] bg-brown-light/10">
+                {/* Grid Image Container */}
+                <div className="relative w-full aspect-[16/9] bg-[#F5F2EB] border-b border-brown-light/20 p-4">
                   {post.thumbnail ? (
                     <Image
                       src={post.thumbnail}
                       alt={post.title}
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      // Changed to object-contain to prevent cutting
+                      className="object-contain group-hover:scale-105 transition-transform duration-700"
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center font-mono text-xs text-brown-light">No Image</div>
                   )}
                 </div>
                 
+                {/* Grid Content */}
                 <div className="p-6 md:p-8 flex flex-col flex-grow">
                   <h2 className="text-2xl font-serif text-brown-deep group-hover:text-accent transition-colors leading-tight mb-3 line-clamp-2">
                     {post.title}
                   </h2>
-                  <p className="text-brown-mid text-sm mb-6 line-clamp-2">
+                  <p className="text-brown-mid text-sm mb-6 line-clamp-2 leading-relaxed">
                     {post.excerpt}
                   </p>
                   <div className="flex items-center justify-between mt-auto pt-4 border-t border-brown-light/20">
