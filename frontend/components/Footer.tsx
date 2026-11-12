@@ -38,9 +38,9 @@ export default function Footer() {
         {/* Column 3: Socials Placeholder */}
         <div className="flex flex-col gap-3">
           <span className="font-mono text-xs text-brown-light uppercase tracking-wider mb-2">Connect</span>
-          <a href="#" className="text-sm text-brown-mid hover:text-accent transition-colors">LinkedIn</a>
-          <a href="#" className="text-sm text-brown-mid hover:text-accent transition-colors">Instagram</a>
-          <a href="#" className="text-sm text-brown-mid hover:text-accent transition-colors">Spotify</a>
+          <a href="https://www.linkedin.com/in/aditya-waradkar-9a03b92a5/" className="text-sm text-brown-mid hover:text-accent transition-colors">LinkedIn</a>
+          <a href="https://www.instagram.com/adityaa.draws/" className="text-sm text-brown-mid hover:text-accent transition-colors">Instagram</a>
+          <a href="https://open.spotify.com/user/31h2c5dtb44qckvb3pjvt2x2rb74?si=ac0357ef9aa04e6d" className="text-sm text-brown-mid hover:text-accent transition-colors">Spotify</a>
           <Link href="/contact" className="text-sm text-brown-mid hover:text-accent transition-colors">Email</Link>
         </div>
       </div>
