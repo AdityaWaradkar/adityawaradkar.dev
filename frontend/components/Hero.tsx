@@ -12,7 +12,7 @@ export default function Hero() {
             <span className="text-accent italic">full-time Artist</span>
           </h1>
           <p className="text-lg text-brown-mid max-w-md mb-10 leading-relaxed">
-            I am a computer engineer with a deep curiosity for how things work. I spend my time exploring cloud architecture and DevOps, creating realistic pencil sketches and paintings, and listening to heavy metal. This site is a collection of what I am learning, building, and creating.
+            I’m a computer engineer who spends a lot of time working with cloud and DevOps, painting and sketching portraits, and listening to heavy metal. This is my corner of the internet for the things I build and create.
           </p>
           
           <div className="flex flex-wrap gap-4">
