@@ -45,6 +45,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${fraunces.variable} ${inter.variable} ${ibmPlexMono.variable} antialiased min-h-screen flex flex-col`}>
+      {/* Skip to Content Link */}
+        <a 
+          href="#main-content" 
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[999] focus:bg-accent focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:font-mono focus:text-sm"
+        >
+          Skip to main content
+        </a>
+        
         <GrainOverlay />
         <Navbar />
         
