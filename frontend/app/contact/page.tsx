@@ -12,13 +12,17 @@ export default function Contact() {
     setStatus("loading");
 
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/contact`, {
+      // Use environment variable and append endpoint
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+      
+      const res = await fetch(`${apiUrl}/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       if (!res.ok) throw new Error("Failed to send");
+      
       setStatus("success");
       setFormData({ name: "", email: "", message: "", honeypot: "" });
     } catch (error) {
