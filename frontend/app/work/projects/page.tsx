@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function Projects() {
   return (
     <div className="max-w-content mx-auto px-6 py-24 min-h-[70vh]">
-      <span className="font-mono text-sm text-brown-light tracking-widest uppercase mb-4 block">
+      <span className="font-mono text-sm text-brown-mid tracking-widest uppercase font-semibold mb-4 block">
         03 — Projects
       </span>
       <h1 className="text-5xl font-serif text-brown-deep tracking-tight mb-16">
@@ -30,7 +30,7 @@ export default function Projects() {
                 {project.title}
               </h2>
               {project.featured && (
-                <span className="text-xs font-mono bg-accent/10 text-accent px-2 py-1 rounded uppercase tracking-wider">
+                <span className="text-xs font-mono bg-accent/10 text-accent px-2 py-1 rounded uppercase tracking-wider shrink-0 ml-4">
                   Featured
                 </span>
               )}
@@ -49,12 +49,30 @@ export default function Projects() {
             </div>
             
             <div className="flex gap-4 mt-auto">
-              <Link href={project.link} className="text-sm font-mono text-brown-deep hover:text-accent underline-offset-4 hover:underline">
-                Live Demo
-              </Link>
-              <Link href={project.github} className="text-sm font-mono text-brown-deep hover:text-accent underline-offset-4 hover:underline">
-                GitHub
-              </Link>
+              
+              {/* STRICTLY HIDDEN IF FALSE */}
+              {project.liveDemo === true && (
+                <Link 
+                  href={project.link} 
+                  rel="noopener noreferrer" 
+                  target="_blank"  
+                  className="text-sm font-mono text-brown-deep hover:text-accent underline-offset-4 hover:underline"
+                >
+                  Live Demo
+                </Link>
+              )}
+              
+              {/* GitHub Link - also check if the link is valid */}
+              {project.github && project.github !== "#" && (
+                <Link 
+                  href={project.github} 
+                  rel="noopener noreferrer" 
+                  target="_blank"
+                  className="text-sm font-mono text-brown-deep hover:text-accent underline-offset-4 hover:underline"
+                >
+                  GitHub
+                </Link>
+              )}
             </div>
           </div>
         ))}

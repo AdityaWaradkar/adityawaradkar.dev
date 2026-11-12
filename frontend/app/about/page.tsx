@@ -18,17 +18,13 @@ export default function About() {
         {/* Left Column: Bio */}
         <div className="md:col-span-8 flex flex-col gap-6 text-brown-mid leading-relaxed text-lg">
           <p>
-            I am a computer engineering student at S.I.E.S Graduate School of Technology with a deep focus on DevOps and Cloud infrastructure. 
-            My professional career is built around designing resilient, scalable systems, automating the boring parts, and ensuring that applications run smoothly behind the scenes.
+              I am a Computer Engineering graduate from S.I.E.S Graduate School of Technology, with a strong focus on DevOps and Cloud infrastructure. I enjoy designing resilient, scalable systems, automating repetitive tasks, and ensuring that applications run smoothly behind the scenes.
           </p>
           <p>
-            Outside of the terminal, I am a visual artist. I specialize in realistic pencil sketches 
-            and paintings. I find that the patience required to render a realistic portrait is exactly 
-            the same patience required to debug a complex distributed system.
+              Outside the terminal, I specialize in realistic pencil sketches and paintings. I’ve found that the meticulous patience required to render a lifelike portrait is exactly the same patience needed to debug a complex distributed system.
           </p>
           <p>
-            I am also a lifelong student of music and literature. This site serves as a living archive 
-            of my technical work, my art, and the media that inspires me.
+             Beyond code and graphite, my downtime is fueled by reading and a deep love for music particularly metal. This site serves as a living archive of my technical builds, my artwork, and the media that inspires me.
           </p>
           
           <div className="mt-8">
@@ -87,16 +83,20 @@ export default function About() {
               <div>
                 <span className="text-xs text-brown-light block mb-1">Education</span>
                 <span className="text-brown-deep font-medium">B.E. Computer Engineering</span>
-                <span className="text-sm text-brown-mid block mt-1">S.I.E.S GST (2022-2026)</span>
+                <span className="text-sm text-brown-mid block mt-1">S.I.E.S Graduate School of Technology (2022-2026)</span>
                 <span className="text-sm text-accent font-mono block mt-1">CGPA: 9.20</span>
               </div>
               <div>
+                <span className="text-xs text-brown-light block mb-1">Employed at</span>
+                <span className="text-brown-deep font-medium">None</span>
+              </div>
+              <div>
                 <span className="text-xs text-brown-light block mb-1">Reading</span>
-                <span className="text-brown-deep font-medium">Designing Data-Intensive Applications</span>
+                <span className="text-brown-deep font-medium">Psycho-Cybernetics by Maxwell Maltz</span>
               </div>
               <div>
                 <span className="text-xs text-brown-light block mb-1">Listening to</span>
-                <span className="text-brown-deep font-medium">Ambient Focus Playlists</span>
+                <span className="text-brown-deep font-medium">Foo Fighters</span>
               </div>
             </div>
           </div>

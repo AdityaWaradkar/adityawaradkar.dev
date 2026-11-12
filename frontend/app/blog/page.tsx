@@ -1,15 +1,16 @@
 import Link from "next/link";
+import Image from "next/image";
 
 type BlogPost = {
   title: string;
   link: string;
   date: string;
   excerpt: string;
+  thumbnail: string;
 };
 
 async function getPosts(): Promise<BlogPost[]> {
   try {
-    // Fetch from the Go backend using the Docker service name
     const res = await fetch("http://backend:8080/api/blog", {
       next: { revalidate: 3600 },
     });
@@ -21,32 +22,32 @@ async function getPosts(): Promise<BlogPost[]> {
   }
 }
 
-// Helper to safely format the RSS date without using `new Date()`
 function formatDate(dateString: string) {
   if (!dateString) return "";
   const parts = dateString.split(" ");
   if (parts.length >= 4) {
-    return `${parts[2]} ${parts[3]}`; // Returns "MMM YYYY" e.g. "Nov 2025"
+    return `${parts[2]} ${parts[3]}`; 
   }
   return dateString;
 }
 
-// REMOVED: export const dynamic = 'force-dynamic';
-
 export default async function Blog() {
   const posts = await getPosts();
+  const featuredPost = posts[0];
+  const remainingPosts = posts.slice(1);
 
   return (
     <div className="max-w-content mx-auto px-6 py-24 min-h-[70vh]">
+      {/* Header */}
       <div className="max-w-3xl mb-16">
-        <span className="font-mono text-sm text-brown-light tracking-widest uppercase mb-4 block">
+        <span className="font-mono text-sm text-brown-mid tracking-widest uppercase font-semibold mb-4 block">
           07 — Blog
         </span>
-        <h1 className="text-5xl font-serif text-brown-deep tracking-tight mb-6">
-          Writing
+        <h1 className="text-5xl md:text-7xl font-serif text-brown-deep tracking-tight mb-6">
+          Writing.
         </h1>
         <p className="text-lg text-brown-mid">
-          Thoughts on cloud architecture, DevOps, and the occasional dive into art and philosophy. 
+          Thoughts on technical things. 
           All articles are published on Medium.
         </p>
       </div>
@@ -66,40 +67,98 @@ export default async function Blog() {
           </a>
         </div>
       ) : (
-        <div className="flex flex-col border-t border-brown-light/30 max-w-3xl">
-          {posts.map((post, index) => (
+        <div className="flex flex-col gap-12">
+          {/* Featured Post (First One) */}
+          {featuredPost && (
             <Link 
-              key={index} 
-              href={post.link}
+              href={featuredPost.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col gap-2 py-8 border-b border-brown-light/30 hover:bg-brown-light/5 transition-colors px-4 -mx-4"
+              className="group grid grid-cols-1 md:grid-cols-2 gap-8 items-center border border-brown-light/20 rounded-xl overflow-hidden hover:shadow-md transition-all bg-cream"
             >
-              <div className="flex justify-between items-baseline gap-4">
-                <h2 className="text-2xl font-serif text-brown-deep group-hover:text-accent transition-colors">
-                  {post.title}
-                </h2>
-                <span className="font-mono text-xs text-brown-light whitespace-nowrap">
-                  {formatDate(post.date)}
-                </span>
+              <div className="relative w-full aspect-video md:aspect-auto md:h-[400px] bg-brown-light/10">
+                {featuredPost.thumbnail ? (
+                  <Image
+                    src={featuredPost.thumbnail}
+                    alt={featuredPost.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center font-mono text-xs text-brown-light">No Image</div>
+                )}
               </div>
-              <p className="text-brown-mid text-sm">{post.excerpt}</p>
-              <span className="font-mono text-xs text-accent mt-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                Read on Medium <span className="text-lg">↗</span>
-              </span>
+              
+              <div className="p-8 md:pr-12 flex flex-col justify-center">
+                <span className="font-mono text-xs text-accent uppercase tracking-wider mb-4 block">
+                  Latest Article
+                </span>
+                <h2 className="text-3xl md:text-4xl font-serif text-brown-deep group-hover:text-accent transition-colors leading-tight mb-4">
+                  {featuredPost.title}
+                </h2>
+                <p className="text-brown-mid mb-6 line-clamp-2">
+                  {featuredPost.excerpt}
+                </p>
+                <div className="flex items-center justify-between mt-auto pt-4 border-t border-brown-light/20">
+                  <span className="font-mono text-sm text-brown-light">{formatDate(featuredPost.date)}</span>
+                  <span className="font-mono text-sm text-brown-deep group-hover:text-accent transition-colors">Read on Medium ↗</span>
+                </div>
+              </div>
             </Link>
-          ))}
+          )}
+
+          {/* Remaining Posts Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {remainingPosts.map((post, index) => (
+              <Link 
+                key={index} 
+                href={post.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col border border-brown-light/20 rounded-xl overflow-hidden hover:shadow-md transition-all bg-cream"
+              >
+                <div className="relative w-full aspect-[16/9] bg-brown-light/10">
+                  {post.thumbnail ? (
+                    <Image
+                      src={post.thumbnail}
+                      alt={post.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center font-mono text-xs text-brown-light">No Image</div>
+                  )}
+                </div>
+                
+                <div className="p-6 md:p-8 flex flex-col flex-grow">
+                  <h2 className="text-2xl font-serif text-brown-deep group-hover:text-accent transition-colors leading-tight mb-3 line-clamp-2">
+                    {post.title}
+                  </h2>
+                  <p className="text-brown-mid text-sm mb-6 line-clamp-2">
+                    {post.excerpt}
+                  </p>
+                  <div className="flex items-center justify-between mt-auto pt-4 border-t border-brown-light/20">
+                    <span className="font-mono text-xs text-brown-light">{formatDate(post.date)}</span>
+                    <span className="font-mono text-xs text-accent opacity-0 group-hover:opacity-100 transition-opacity">
+                      Read ↗
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       )}
       
-      <div className="mt-12">
+      {/* Footer Link */}
+      <div className="mt-16 text-center">
         <a 
-          href="https://medium.com" 
+          href="https://medium.com/@adityawaradkar.learning" 
           target="_blank" 
           rel="noopener noreferrer"
-          className="font-mono text-sm text-brown-mid hover:text-accent underline-offset-4 hover:underline"
+          className="inline-block border border-brown-light/40 px-8 py-3 rounded-md font-mono text-sm text-brown-deep hover:bg-brown-light/10 transition-colors"
         >
-          View all articles on Medium →
+          View all articles on Medium
         </a>
       </div>
     </div>

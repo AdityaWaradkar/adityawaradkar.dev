@@ -7,16 +7,12 @@ export default function Hero() {
         
         {/* Left Side: Text Content */}
         <div className="md:col-span-7 flex flex-col items-start z-10">
-          <span className="font-mono text-xs text-brown-light tracking-widest uppercase mb-6">
-            Portfolio 2026
-          </span>
           <h1 className="text-5xl md:text-7xl font-serif text-brown-deep tracking-tight leading-[1.1] mb-6">
-            Computer engineer. <br />
-            Pencil artist. <br />
-            <span className="text-accent italic">Listener of many things.</span>
+            part-time engineer <br />
+            <span className="text-accent italic">full-time Artist</span>
           </h1>
           <p className="text-lg text-brown-mid max-w-md mb-10 leading-relaxed">
-            I build cloud infrastructure by day, sketch realistic portraits by night, and curate music and books in between.
+            I am a computer engineer with a deep curiosity for how things work. I spend my time exploring cloud architecture and DevOps, creating realistic pencil sketches and paintings, and listening to heavy metal. This site is a collection of what I am learning, building, and creating.
           </p>
           
           <div className="flex flex-wrap gap-4">

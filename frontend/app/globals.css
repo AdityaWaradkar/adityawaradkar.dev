@@ -56,3 +56,26 @@
     animation: none;
   }
 }
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-draw {
+  /* Increased to 2000 to ensure it covers the full length of complex paths */
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: draw 3.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  /* Prevents the line from flashing before the delay begins */
+  animation-fill-mode: both; 
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-draw {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+}
