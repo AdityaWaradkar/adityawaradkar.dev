@@ -11,7 +11,9 @@ type BlogPost = {
 
 async function getPosts(): Promise<BlogPost[]> {
   try {
-    const res = await fetch("http://backend:8080/api/blog", {
+    // Use the environment variable, fallback to local for dev
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://backend:8080';
+    const res = await fetch(`${apiUrl}/api/blog`, {
       next: { revalidate: 3600 },
     });
     if (!res.ok) throw new Error("Failed to fetch");
