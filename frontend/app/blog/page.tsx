@@ -11,8 +11,8 @@ type BlogPost = {
 
 async function getPosts(): Promise<BlogPost[]> {
   try {
-    // Use the environment variable, fallback to local for dev
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://backend:8080';
+    // Use the environment variable, fallback to localhost for dev
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
     const res = await fetch(`${apiUrl}/api/blog`, {
       next: { revalidate: 3600 },
     });
@@ -46,7 +46,7 @@ export default async function Blog() {
           07 — Blog
         </span>
         <h1 className="text-5xl md:text-7xl font-serif text-brown-deep tracking-tight mb-6">
-          Technical Writingclea
+          Technical Writing
         </h1>
         <p className="text-lg text-brown-mid">
           Thoughts on technical things. All articles are published on Medium.
@@ -78,14 +78,12 @@ export default async function Blog() {
               rel="noopener noreferrer"
               className="group grid grid-cols-1 md:grid-cols-2 gap-0 border border-brown-light/30 rounded-xl overflow-hidden hover:shadow-md transition-all bg-cream"
             >
-              {/* Featured Image Container */}
               <div className="relative w-full aspect-video md:aspect-auto md:h-full min-h-[300px] md:min-h-[400px] bg-[#F5F2EB] border-b md:border-b-0 md:border-r border-brown-light/20 p-6">
                 {featuredPost.thumbnail ? (
                   <Image
                     src={featuredPost.thumbnail}
                     alt={featuredPost.title}
                     fill
-                    // Changed to object-contain to prevent cutting
                     className="object-contain group-hover:scale-105 transition-transform duration-700"
                   />
                 ) : (
@@ -93,7 +91,6 @@ export default async function Blog() {
                 )}
               </div>
               
-              {/* Featured Content */}
               <div className="p-8 md:p-12 flex flex-col justify-center">
                 <span className="font-mono text-xs text-accent uppercase tracking-wider mb-4 block">
                   Latest Article
@@ -124,14 +121,12 @@ export default async function Blog() {
                 rel="noopener noreferrer"
                 className="group flex flex-col border border-brown-light/30 rounded-xl overflow-hidden hover:shadow-md transition-all bg-cream"
               >
-                {/* Grid Image Container */}
                 <div className="relative w-full aspect-[16/9] bg-[#F5F2EB] border-b border-brown-light/20 p-4">
                   {post.thumbnail ? (
                     <Image
                       src={post.thumbnail}
                       alt={post.title}
                       fill
-                      // Changed to object-contain to prevent cutting
                       className="object-contain group-hover:scale-105 transition-transform duration-700"
                     />
                   ) : (
@@ -139,7 +134,6 @@ export default async function Blog() {
                   )}
                 </div>
                 
-                {/* Grid Content */}
                 <div className="p-6 md:p-8 flex flex-col flex-grow">
                   <h2 className="text-2xl font-serif text-brown-deep group-hover:text-accent transition-colors leading-tight mb-3 line-clamp-2">
                     {post.title}
