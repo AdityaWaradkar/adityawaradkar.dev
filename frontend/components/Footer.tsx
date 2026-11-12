@@ -21,7 +21,7 @@ export default function Footer() {
             Aditya Waradkar
           </p>
           <p className="text-brown-mid text-sm max-w-xs">
-            Computer engineer. Pencil artist. Listener of many things.
+            Computer Engineer and Artist
           </p>
         </div>
 

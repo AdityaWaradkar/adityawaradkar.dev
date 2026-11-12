@@ -1,32 +1,54 @@
 import { booksData } from "@/lib/booksData";
-
+import Image from "next/image";
 
 export default function Books() {
   return (
     <div className="max-w-content mx-auto px-6 py-24 min-h-[70vh]">
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 border-b border-brown-light/30 pb-8">
         <div>
-          <span className="font-mono text-sm text-brown-light tracking-widest uppercase mb-4 block">
+          <span className="font-mono text-sm text-brown-mid tracking-widest uppercase font-semibold mb-4 block">
             06 — Books
           </span>
-          <h1 className="text-5xl font-serif text-brown-deep tracking-tight">
+          <h1 className="text-5xl md:text-7xl font-serif text-brown-deep tracking-tight">
             Reading List
           </h1>
         </div>
-        <p className="text-brown-mid max-w-sm text-sm">
-          A collection of books that have shaped my thinking on systems, philosophy, psychology, and life.
+        <p className="text-brown-mid max-w-sm text-sm leading-relaxed">
+          A collection of books that have shaped my thinking on philosophy, psychology, and life. 
+          The ones currently on my desk and the ones I highly recommend.
         </p>
       </div>
 
-      <div className="flex flex-col gap-8 max-w-4xl">
+      {/* Books Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
         {booksData.map((book) => (
-          <div
+          <div 
             key={book.id}
-            className="group border border-brown-light/30 p-6 md:p-8 rounded-lg bg-cream/50 hover:bg-cream hover:shadow-sm transition-all flex flex-col md:flex-row gap-6 md:gap-12"
+            className="group flex flex-col sm:flex-row gap-6 md:gap-8 items-start"
           >
-            {/* Book Info */}
-            <div className="md:w-1/3 shrink-0 flex flex-col">
-              <div className="flex items-center gap-3 mb-2">
+            {/* Book Cover Placeholder */}
+            <div className="relative w-full sm:w-40 aspect-[2/3] shrink-0 rounded-md overflow-hidden bg-brown-light/10 border border-brown-light/20 shadow-sm">
+              {book.coverUrl ? (
+                <Image
+                  src={book.coverUrl}
+                  alt={book.title}
+                  fill
+                  className="object-cover" // Removed the hover zoom class here
+                  sizes="(max-width: 768px) 100vw, 160px"
+                />
+              ) : (
+                // Fallback if no image is uploaded
+                <div className="absolute inset-0 flex items-center justify-center text-brown-light font-mono text-xs">
+                  No Cover
+                </div>
+              )}
+            </div>
+
+            {/* Book Details */}
+            <div className="flex flex-col flex-grow h-full pt-2">
+              {/* Tags */}
+              <div className="flex items-center gap-3 mb-3">
                 <span className="font-mono text-[10px] uppercase tracking-wider text-brown-light border border-brown-light/40 px-2 py-0.5 rounded">
                   {book.category}
                 </span>
@@ -37,27 +59,22 @@ export default function Books() {
                   </span>
                 )}
               </div>
-              <h2 className="text-2xl font-serif text-brown-deep leading-tight mb-2">
+
+              {/* Title & Author */}
+              <h2 className="text-2xl font-serif text-brown-deep leading-tight mb-1 group-hover:text-accent transition-colors">
                 {book.title}
               </h2>
-              <p className="text-sm text-brown-mid font-medium mb-4">{book.author}</p>
+              <p className="text-sm text-brown-mid font-medium mb-6">{book.author}</p>
 
-              {/* Rating (Stars) */}
-              <div className="flex gap-1 text-accent mt-auto pt-4 md:pt-0">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill={i < book.rating ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.5">
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                ))}
+              {/* My Notes */}
+              <div className="flex flex-col flex-grow border-t border-brown-light/20 pt-4">
+                <span className="font-mono text-[10px] text-brown-light uppercase tracking-wider mb-2 block">
+                  My Notes
+                </span>
+                <p className="text-brown-mid text-sm leading-relaxed">
+                  {book.note}
+                </p>
               </div>
-            </div>
-
-            {/* Personal Note */}
-            <div className="md:w-2/3 flex flex-col justify-center">
-              <span className="font-mono text-xs text-brown-light mb-2 block">My Notes</span>
-              <p className="text-brown-mid leading-relaxed">
-                {book.note}
-              </p>
             </div>
           </div>
         ))}

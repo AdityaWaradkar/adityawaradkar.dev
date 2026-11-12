@@ -41,12 +41,17 @@ type Item struct {
 	Link        string `xml:"link"`
 	PubDate     string `xml:"pubDate"`
 	Description string `xml:"description"`
+	// Added to capture the media:thumbnail tag
+	MediaThumbnail struct {
+		URL string `xml:"url,attr"`
+	} `xml:"thumbnail"`
 }
 type BlogPost struct {
-	Title   string `json:"title"`
-	Link    string `json:"link"`
-	Date    string `json:"date"`
-	Excerpt string `json:"excerpt"`
+	Title     string `json:"title"`
+	Link      string `json:"link"`
+	Date      string `json:"date"`
+	Excerpt   string `json:"excerpt"`
+	Thumbnail string `json:"thumbnail"`
 }
 
 // Structs for GitHub GraphQL
@@ -97,7 +102,7 @@ type ContactRequest struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Message  string `json:"message"`
-	Honeypot string `json:"honeypot"` // Spam prevention
+	Honeypot string `json:"honeypot"`
 }
 
 func getSpotifyAccessToken() (string, error) {
@@ -162,13 +167,27 @@ func main() {
 		if len(rss.Channel.Items) < limit {
 			limit = len(rss.Channel.Items)
 		}
+		
 		for i := 0; i < limit; i++ {
 			item := rss.Channel.Items[i]
+			
+			// Extract Thumbnail
+			thumbnail := item.MediaThumbnail.URL
+			if thumbnail == "" {
+				if start := strings.Index(item.Description, `<img src="`); start != -1 {
+					start += 10
+					if end := strings.Index(item.Description[start:], `"`); end != -1 {
+						thumbnail = item.Description[start : start+end]
+					}
+				}
+			}
+
 			posts = append(posts, BlogPost{
-				Title:   item.Title,
-				Link:    item.Link,
-				Date:    item.PubDate,
-				Excerpt: "Click to read the full article on Medium.",
+				Title:     item.Title,
+				Link:      item.Link,
+				Date:      item.PubDate,
+				Excerpt:   "Click to read the full article on Medium.",
+				Thumbnail: thumbnail,
 			})
 		}
 		w.Header().Set("Content-Type", "application/json")
@@ -246,20 +265,16 @@ func main() {
 			return
 		}
 
-		// Honeypot check (if this field is filled, it's a bot)
 		if req.Honeypot != "" {
-			// Pretend it succeeded so the bot doesn't know it failed
 			w.WriteHeader(http.StatusOK)
 			return
 		}
 
-		// Basic validation
 		if req.Name == "" || req.Email == "" || req.Message == "" {
 			http.Error(w, "Missing required fields", http.StatusBadRequest)
 			return
 		}
 
-		// Send via Resend
 		apiKey := os.Getenv("RESEND_API_KEY")
 		if apiKey == "" {
 			http.Error(w, "Email service not configured", http.StatusInternalServerError)
