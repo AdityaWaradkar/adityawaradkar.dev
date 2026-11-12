@@ -33,6 +33,12 @@
     /* Tighter tracking makes serif headings look more modern and bold */
     letter-spacing: -0.02em; 
   }
+
+   *:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
 }
 
 /* Add this to the bottom of globals.css */
