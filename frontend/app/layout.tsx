@@ -22,7 +22,7 @@ const ibmPlexMono = IBM_Plex_Mono({ weight: ["400", "500"], subsets: ["latin"], 
 // -----------------------------------------------------------------------------
 export const metadata: Metadata = {
   title: {
-    default: "Aditya Waradkar | DevOps & Cloud Engineer",
+    default: "Aditya Waradkar | Engineer & Artist",
     template: "%s | Aditya Waradkar",
   },
   description: "Computer engineer specializing in DevOps and Cloud infrastructure. Pencil artist. Listener of many things.",
@@ -33,13 +33,13 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://adityawaradkar.dev",
-    title: "Aditya Waradkar | DevOps & Cloud Engineer",
+    title: "Aditya Waradkar | Engineer & Artist",
     description: "Computer engineer specializing in DevOps and Cloud infrastructure. Pencil artist. Listener of many things.",
     siteName: "Aditya Waradkar",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Aditya Waradkar | DevOps & Cloud Engineer",
+    title: "Aditya Waradkar | Engineer & Artist",
     description: "Computer engineer specializing in DevOps and Cloud infrastructure. Pencil artist. Listener of many things.",
   },
   robots: {
