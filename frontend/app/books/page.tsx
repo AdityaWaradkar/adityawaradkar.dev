@@ -4,7 +4,8 @@ import Image from "next/image";
 export default function Books() {
   return (
     <div className="max-w-content mx-auto px-6 py-24 min-h-[70vh]">
-      {/* Header */}
+      
+      {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 border-b border-brown-light/30 pb-8">
         <div>
           <span className="font-mono text-sm text-brown-mid tracking-widest uppercase font-semibold mb-4 block">
@@ -20,34 +21,37 @@ export default function Books() {
         </p>
       </div>
 
-      {/* Books Grid */}
+      {/* Books Grid Layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
         {booksData.map((book) => (
           <div 
             key={book.id}
             className="group flex flex-col sm:flex-row gap-6 md:gap-8 items-start"
           >
-            {/* Book Cover Placeholder */}
-            <div className="relative w-full sm:w-40 aspect-[2/3] shrink-0 rounded-md overflow-hidden bg-brown-light/10 border border-brown-light/20 shadow-sm">
+            {/* Book Cover Image */}
+            {/* Using aspect-[2/3] to maintain the standard physical book proportions */}
+            <div className="relative w-full sm:w-40 aspect-[2/3] shrink-0 rounded-md overflow-hidden bg-brown-light/10 border border-brown-light/20 shadow-sm transition-shadow group-hover:shadow-md">
               {book.coverUrl ? (
                 <Image
                   src={book.coverUrl}
                   alt={book.title}
                   fill
-                  className="object-cover" // Removed the hover zoom class here
+                  // object-cover ensures the image fills the 2:3 ratio without distortion
+                  className="object-cover" 
                   sizes="(max-width: 768px) 100vw, 160px"
                 />
               ) : (
-                // Fallback if no image is uploaded
+                // Fallback if the cover image is missing
                 <div className="absolute inset-0 flex items-center justify-center text-brown-light font-mono text-xs">
                   No Cover
                 </div>
               )}
             </div>
 
-            {/* Book Details */}
+            {/* Book Details & Overview */}
             <div className="flex flex-col flex-grow h-full pt-2">
-              {/* Tags */}
+              
+              {/* Category & Status Tags */}
               <div className="flex items-center gap-3 mb-3">
                 <span className="font-mono text-[10px] uppercase tracking-wider text-brown-light border border-brown-light/40 px-2 py-0.5 rounded">
                   {book.category}
@@ -64,17 +68,20 @@ export default function Books() {
               <h2 className="text-2xl font-serif text-brown-deep leading-tight mb-1 group-hover:text-accent transition-colors">
                 {book.title}
               </h2>
-              <p className="text-sm text-brown-mid font-medium mb-6">{book.author}</p>
+              <p className="text-sm text-brown-mid font-medium mb-6">
+                {book.author}
+              </p>
 
-              {/* My Notes */}
+              {/* Overview Section */}
               <div className="flex flex-col flex-grow border-t border-brown-light/20 pt-4">
                 <span className="font-mono text-[10px] text-brown-light uppercase tracking-wider mb-2 block">
-                  My Notes
+                  Overview
                 </span>
                 <p className="text-brown-mid text-sm leading-relaxed">
-                  {book.note}
+                  {book.summary}
                 </p>
               </div>
+              
             </div>
           </div>
         ))}

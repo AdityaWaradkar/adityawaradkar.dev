@@ -1,21 +1,27 @@
 import { ImageResponse } from 'next/og'
 
-// Image metadata
+// -----------------------------------------------------------------------------
+// Image Metadata
+// Next.js reads these exports to generate the <meta> tags automatically.
+// -----------------------------------------------------------------------------
 export const alt = 'Aditya Waradkar Portfolio'
 export const size = {
   width: 1200,
-  height: 630,
+  height: 630, // Standard 1.91:1 ratio for social media cards
 }
-
 export const contentType = 'image/png'
 
-// Image generation
+// -----------------------------------------------------------------------------
+// Image Generation
+// This function runs on the server to dynamically generate the image using JSX.
+// -----------------------------------------------------------------------------
 export default async function Image() {
   return new ImageResponse(
     (
+      // Main Container: Sets the background color and centers everything
       <div
         style={{
-          background: '#FAF6F0', // Cream
+          background: '#FAF6F0', // Cream background (matches site)
           width: '100%',
           height: '100%',
           display: 'flex',
@@ -25,17 +31,19 @@ export default async function Image() {
           fontFamily: 'sans-serif',
         }}
       >
+        {/* Inner Border Box: Creates a framed, editorial look */}
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            border: '2px solid #C4A882',
+            border: '2px solid #C4A882', // Brown light border
             padding: '60px 80px',
             borderRadius: '16px',
           }}
         >
+          {/* Main Title */}
           <h1
             style={{
               fontSize: 72,
@@ -46,6 +54,8 @@ export default async function Image() {
           >
             Aditya Waradkar
           </h1>
+          
+          {/* Subtitle */}
           <p
             style={{
               fontSize: 32,
