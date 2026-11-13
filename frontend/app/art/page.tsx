@@ -5,15 +5,19 @@ import Image from "next/image";
 import { artData, ArtPiece } from "@/lib/artData";
 import Lightbox from "@/components/Lightbox";
 
+// Define the allowed filter states explicitly
+type FilterState = "all" | "sketches" | "paintings";
+
 export default function Art() {
-  const [filter, setFilter] = useState<"all" | "sketches" | "paintings">("all");
+  const [filter, setFilter] = useState<FilterState>("all");
   const [selectedPiece, setSelectedPiece] = useState<ArtPiece | null>(null);
 
+  // Filter the artwork based on the active tab
   const filteredArt = artData.filter(
     (piece) => filter === "all" || piece.category === filter
   );
 
-  // Logic to find the next/previous piece within the *filtered* list
+  // Calculate the next piece in the filtered list (looping back to the start)
   const handleNext = () => {
     if (!selectedPiece) return;
     const currentIndex = filteredArt.findIndex((p) => p.id === selectedPiece.id);
@@ -21,6 +25,7 @@ export default function Art() {
     setSelectedPiece(filteredArt[nextIndex]);
   };
 
+  // Calculate the previous piece in the filtered list (looping to the end)
   const handlePrev = () => {
     if (!selectedPiece) return;
     const currentIndex = filteredArt.findIndex((p) => p.id === selectedPiece.id);
@@ -28,8 +33,12 @@ export default function Art() {
     setSelectedPiece(filteredArt[prevIndex]);
   };
 
+  const tabs: FilterState[] = ["all", "sketches", "paintings"];
+
   return (
     <div className="max-w-content mx-auto px-6 py-24 min-h-[70vh]">
+      
+      {/* Header & Filter Section */}
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
         <div>
           <span className="font-mono text-sm text-brown-light tracking-widest uppercase mb-4 block">
@@ -42,10 +51,11 @@ export default function Art() {
 
         {/* Filter Tabs */}
         <div className="flex gap-4 border-b border-brown-light/30 pb-2">
-          {["all", "sketches", "paintings"].map((tab) => (
+          {tabs.map((tab) => (
             <button
               key={tab}
-              onClick={() => setFilter(tab as any)}
+              onClick={() => setFilter(tab)}
+              aria-pressed={filter === tab}
               className={`font-mono text-sm uppercase tracking-wider transition-colors pb-2 ${
                 filter === tab
                   ? "text-accent border-b-2 border-accent"
@@ -65,7 +75,16 @@ export default function Art() {
             key={piece.id} 
             className="group flex flex-col gap-4 cursor-pointer"
             onClick={() => setSelectedPiece(piece)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setSelectedPiece(piece);
+              }
+            }}
           >
+            {/* Artwork Image */}
             <div className="relative aspect-[4/5] overflow-hidden rounded-md bg-brown-light/10 border border-brown-light/20">
               <Image
                 src={piece.imageUrl}
@@ -76,6 +95,7 @@ export default function Art() {
               />
             </div>
             
+            {/* Artwork Details */}
             <div>
               <div className="flex justify-between items-baseline mb-1">
                 <h2 className="text-xl font-serif text-brown-deep group-hover:text-accent transition-colors">
@@ -89,7 +109,7 @@ export default function Art() {
         ))}
       </div>
 
-      {/* The Lightbox Component */}
+      {/* Lightbox Modal */}
       <Lightbox 
         piece={selectedPiece} 
         onClose={() => setSelectedPiece(null)} 

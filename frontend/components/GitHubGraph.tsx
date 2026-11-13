@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { fetchApi } from "@/lib/api";
 
+// Type definitions matching the Go backend response
 type ContributionDay = {
   contributionCount: number;
   date: string;
@@ -22,9 +23,9 @@ export default function GitHubGraph() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Fetch the contribution data from our Go backend
     async function fetchData() {
       try {
-        // Using the fetchApi helper which resolves to localhost in the browser
         const json = await fetchApi<CalendarData>("/api/github");
         setData(json);
       } catch (error) {
@@ -35,6 +36,8 @@ export default function GitHubGraph() {
     }
     fetchData();
   }, []);
+
+  // --- Render States ---
 
   if (loading) {
     return (
@@ -51,7 +54,12 @@ export default function GitHubGraph() {
         <p className="text-brown-mid text-sm">
           Contribution data is currently unavailable. 
           <br />
-          <a href="https://github.com/AdityaWaradkar" target="_blank" rel="noopener noreferrer" className="text-accent underline underline-offset-4 mt-2 inline-block">
+          <a 
+            href="https://github.com/AdityaWaradkar" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-accent underline underline-offset-4 mt-2 inline-block"
+          >
             View profile directly on GitHub ↗
           </a>
         </p>
@@ -59,7 +67,7 @@ export default function GitHubGraph() {
     );
   }
 
-  // Helper to get color based on contribution count
+  // Helper function to map contribution counts to our custom color palette
   const getColor = (count: number) => {
     if (count === 0) return "bg-brown-light/20";
     if (count <= 3) return "bg-accent/30";
@@ -70,6 +78,8 @@ export default function GitHubGraph() {
 
   return (
     <div className="w-full border border-brown-light/30 rounded-lg p-6 bg-cream shadow-sm">
+      
+      {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 gap-2">
         <div>
           <h3 className="font-serif text-2xl text-brown-deep">GitHub Activity</h3>
@@ -87,8 +97,12 @@ export default function GitHubGraph() {
         </a>
       </div>
 
-      {/* Graph Grid */}
+      {/* Contribution Graph Grid */}
       <div className="overflow-x-auto pb-2">
+        {/* 
+          The graph is rendered as columns (weeks) and rows (days).
+          We use flex column for weeks, and flex row for days.
+        */}
         <div className="flex gap-1 min-w-[700px]">
           {data.weeks.map((week, weekIndex) => (
             <div key={weekIndex} className="flex flex-col gap-1">

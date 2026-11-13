@@ -3,10 +3,12 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { socialsData } from "@/lib/socialsData";
 
 export default function Footer() {
   const [currentYear, setCurrentYear] = useState<number | null>(null);
 
+  // Calculate the year on the client side to avoid Next.js hydration errors
   useEffect(() => {
     setCurrentYear(new Date().getFullYear());
   }, []);
@@ -27,7 +29,7 @@ export default function Footer() {
 
         {/* Column 2: Sitemap */}
         <div className="flex flex-col gap-3">
-          <span className="font-mono text-xs text-brown-light uppercase tracking-wider mb-2">Explore</span>
+          <span className="font-mono text-xs text-brown-mid uppercase tracking-wider font-semibold mb-2">Explore</span>
           <Link href="/about" className="text-sm text-brown-mid hover:text-accent transition-colors">About</Link>
           <Link href="/work/projects" className="text-sm text-brown-mid hover:text-accent transition-colors">Projects</Link>
           <Link href="/art" className="text-sm text-brown-mid hover:text-accent transition-colors">Art Gallery</Link>
@@ -35,18 +37,28 @@ export default function Footer() {
           <Link href="/contact" className="text-sm text-brown-mid hover:text-accent transition-colors">Contact</Link>
         </div>
 
-        {/* Column 3: Socials Placeholder */}
+        {/* Column 3: Socials */}
         <div className="flex flex-col gap-3">
-          <span className="font-mono text-xs text-brown-light uppercase tracking-wider mb-2">Connect</span>
-          <a href="https://www.linkedin.com/in/aditya-waradkar-9a03b92a5/" className="text-sm text-brown-mid hover:text-accent transition-colors">LinkedIn</a>
-          <a href="https://www.instagram.com/adityaa.draws/" className="text-sm text-brown-mid hover:text-accent transition-colors">Instagram</a>
-          <a href="https://open.spotify.com/user/31h2c5dtb44qckvb3pjvt2x2rb74?si=ac0357ef9aa04e6d" className="text-sm text-brown-mid hover:text-accent transition-colors">Spotify</a>
-          <Link href="/contact" className="text-sm text-brown-mid hover:text-accent transition-colors">Email</Link>
+          <span className="font-mono text-xs text-brown-mid uppercase tracking-wider font-semibold mb-2">Connect</span>
+          {/* Map through the shared socials data file to keep links consistent */}
+          {socialsData.map((social) => (
+            <a 
+              key={social.name}
+              href={social.url} 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-brown-mid hover:text-accent transition-colors w-fit"
+            >
+              {social.name}
+            </a>
+          ))}
+          <Link href="/contact" className="text-sm text-brown-mid hover:text-accent transition-colors w-fit">Email</Link>
         </div>
       </div>
 
+      {/* Bottom Bar: Copyright and Credits */}
       <div className="border-t border-brown-light/20">
-        <div className="max-w-content mx-auto px-6 py-6 flex justify-between items-center text-xs font-mono text-brown-light">
+        <div className="max-w-content mx-auto px-6 py-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-mono text-brown-light">
           <span>© {currentYear ? currentYear : "2025"} Aditya Waradkar</span>
           <span>Built with Next.js & Go</span>
         </div>

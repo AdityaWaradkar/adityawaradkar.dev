@@ -12,7 +12,8 @@ type LightboxProps = {
 };
 
 export default function Lightbox({ piece, onClose, onNext, onPrev }: LightboxProps) {
-  // Handle keyboard navigation
+  
+  // Handle keyboard navigation and body scroll locking
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -21,39 +22,43 @@ export default function Lightbox({ piece, onClose, onNext, onPrev }: LightboxPro
     };
 
     if (piece) {
+      // Add event listener when lightbox is open
       window.addEventListener("keydown", handleKeyDown);
-      // Prevent background scrolling when lightbox is open
+      
+      // Prevent the background page from scrolling while the lightbox is open
       document.body.style.overflow = "hidden";
     }
 
+    // Cleanup: remove listener and restore scrolling when closed
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "auto";
     };
   }, [piece, onClose, onNext, onPrev]);
 
+  // Don't render anything if no piece is selected
   if (!piece) return null;
 
   return (
     <div 
       className="fixed inset-0 z-[200] flex items-center justify-center bg-cream/95 backdrop-blur-sm p-4 md:p-12"
-      onClick={onClose} // Close when clicking the backdrop
+      onClick={onClose} // Clicking the backdrop closes the modal
     >
       {/* Close Button */}
       <button 
         onClick={onClose}
-        className="absolute top-6 right-6 text-brown-deep hover:text-accent transition-colors z-10"
-        aria-label="Close"
+        className="absolute top-6 right-6 text-brown-deep hover:text-accent transition-colors z-10 p-2"
+        aria-label="Close Lightbox"
       >
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
           <path d="M18 6L6 18M6 6l12 12" />
         </svg>
       </button>
 
-      {/* Navigation Arrows */}
+      {/* Previous Image Button */}
       <button 
         onClick={(e) => { e.stopPropagation(); onPrev(); }}
-        className="absolute left-4 md:left-12 top-1/2 -translate-y-1/2 text-brown-deep hover:text-accent transition-colors z-10 p-2"
+        className="absolute left-2 md:left-8 top-1/2 -translate-y-1/2 text-brown-deep hover:text-accent transition-colors z-10 p-2"
         aria-label="Previous image"
       >
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -61,9 +66,10 @@ export default function Lightbox({ piece, onClose, onNext, onPrev }: LightboxPro
         </svg>
       </button>
       
+      {/* Next Image Button */}
       <button 
         onClick={(e) => { e.stopPropagation(); onNext(); }}
-        className="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 text-brown-deep hover:text-accent transition-colors z-10 p-2"
+        className="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 text-brown-deep hover:text-accent transition-colors z-10 p-2"
         aria-label="Next image"
       >
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -74,9 +80,9 @@ export default function Lightbox({ piece, onClose, onNext, onPrev }: LightboxPro
       {/* Main Content Area */}
       <div 
         className="flex flex-col md:flex-row max-w-6xl w-full max-h-full gap-8 items-center"
-        onClick={(e) => e.stopPropagation()} // Prevent clicks inside from closing the modal
+        onClick={(e) => e.stopPropagation()} // Prevent clicks inside the content from closing the modal
       >
-        {/* Image Container */}
+        {/* Image Display */}
         <div className="relative flex-grow h-[50vh] md:h-[80vh] w-full">
           <Image
             src={piece.imageUrl}
@@ -88,9 +94,9 @@ export default function Lightbox({ piece, onClose, onNext, onPrev }: LightboxPro
           />
         </div>
 
-        {/* Metadata Side Panel */}
-        <div className="w-full md:w-80 flex flex-col shrink-0 text-brown-deep">
-          <span className="font-mono text-xs text-brown-light uppercase tracking-widest mb-2 block">
+        {/* Side Panel: Artwork Metadata */}
+        <div className="w-full md:w-80 flex flex-col shrink-0 text-brown-deep overflow-y-auto max-h-[50vh] md:max-h-[80vh] pb-4">
+          <span className="font-mono text-xs text-brown-mid uppercase tracking-widest mb-2 block">
             {piece.category}
           </span>
           <h2 className="text-3xl font-serif mb-6 leading-tight">{piece.title}</h2>

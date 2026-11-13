@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
+// Type definition matching the JSON returned by the Go backend
 type BlogPost = {
   title: string;
   link: string;
@@ -9,21 +10,27 @@ type BlogPost = {
   thumbnail: string;
 };
 
+// Server-side fetch function with ISR (Incremental Static Regeneration)
 async function getPosts(): Promise<BlogPost[]> {
   try {
-    // Use the environment variable, fallback to localhost for dev
+    // Fallback to localhost if env var is missing (for local dev outside Docker)
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+    
     const res = await fetch(`${apiUrl}/api/blog`, {
+      // Cache the response and revalidate every hour to get new Medium posts
       next: { revalidate: 3600 },
     });
+    
     if (!res.ok) throw new Error("Failed to fetch");
     return res.json();
   } catch (error) {
     console.error("Error fetching blog posts:", error);
+    // Return an empty array so the UI can render a fallback state instead of crashing
     return [];
   }
 }
 
+// Safely format the RSS date string (e.g., "Wed, 25 Oct 2026 12:00:00 GMT" -> "Oct 2026")
 function formatDate(dateString: string) {
   if (!dateString) return "";
   const parts = dateString.split(" ");
@@ -40,7 +47,7 @@ export default async function Blog() {
 
   return (
     <div className="max-w-content mx-auto px-6 py-24 min-h-[70vh]">
-      {/* Header */}
+      {/* Page Header */}
       <div className="max-w-3xl mb-16">
         <span className="font-mono text-sm text-brown-mid tracking-widest uppercase font-semibold mb-4 block">
           07 — Blog
@@ -53,6 +60,7 @@ export default async function Blog() {
         </p>
       </div>
 
+      {/* Empty State Fallback */}
       {posts.length === 0 ? (
         <div className="border border-brown-light/30 rounded-lg p-8 bg-cream flex flex-col items-center justify-center text-center">
           <p className="text-brown-mid text-sm mb-4">
@@ -70,7 +78,7 @@ export default async function Blog() {
       ) : (
         <div className="flex flex-col gap-12">
           
-          {/* Featured Post */}
+          {/* Featured Post (The most recent article) */}
           {featuredPost && (
             <Link 
               href={featuredPost.link}
@@ -78,6 +86,7 @@ export default async function Blog() {
               rel="noopener noreferrer"
               className="group grid grid-cols-1 md:grid-cols-2 gap-0 border border-brown-light/30 rounded-xl overflow-hidden hover:shadow-md transition-all bg-cream"
             >
+              {/* Image Container with object-contain to prevent cropping */}
               <div className="relative w-full aspect-video md:aspect-auto md:h-full min-h-[300px] md:min-h-[400px] bg-[#F5F2EB] border-b md:border-b-0 md:border-r border-brown-light/20 p-6">
                 {featuredPost.thumbnail ? (
                   <Image
@@ -91,6 +100,7 @@ export default async function Blog() {
                 )}
               </div>
               
+              {/* Text Content */}
               <div className="p-8 md:p-12 flex flex-col justify-center">
                 <span className="font-mono text-xs text-accent uppercase tracking-wider mb-4 block">
                   Latest Article
@@ -111,7 +121,7 @@ export default async function Blog() {
             </Link>
           )}
 
-          {/* Remaining Posts Grid */}
+          {/* Grid for Remaining Posts */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {remainingPosts.map((post, index) => (
               <Link 
@@ -121,6 +131,7 @@ export default async function Blog() {
                 rel="noopener noreferrer"
                 className="group flex flex-col border border-brown-light/30 rounded-xl overflow-hidden hover:shadow-md transition-all bg-cream"
               >
+                {/* Image Container */}
                 <div className="relative w-full aspect-[16/9] bg-[#F5F2EB] border-b border-brown-light/20 p-4">
                   {post.thumbnail ? (
                     <Image
@@ -134,6 +145,7 @@ export default async function Blog() {
                   )}
                 </div>
                 
+                {/* Text Content */}
                 <div className="p-6 md:p-8 flex flex-col flex-grow">
                   <h2 className="text-2xl font-serif text-brown-deep group-hover:text-accent transition-colors leading-tight mb-3 line-clamp-2">
                     {post.title}
@@ -154,7 +166,7 @@ export default async function Blog() {
         </div>
       )}
       
-      {/* Footer Link */}
+      {/* Footer Call to Action */}
       <div className="mt-16 text-center">
         <a 
           href="https://medium.com/@adityawaradkar.learning" 

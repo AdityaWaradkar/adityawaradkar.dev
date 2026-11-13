@@ -3,16 +3,24 @@
 import { useState } from "react";
 import { socialsData } from "@/lib/socialsData";
 
+// Define the possible states of the form submission process
+type SubmitStatus = "idle" | "loading" | "success" | "error";
+
 export default function Contact() {
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [formData, setFormData] = useState({ name: "", email: "", message: "", honeypot: "" });
+  const [status, setStatus] = useState<SubmitStatus>("idle");
+  const [formData, setFormData] = useState({ 
+    name: "", 
+    email: "", 
+    message: "", 
+    honeypot: "" // Hidden field for bot detection
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("loading");
 
     try {
-      // Use environment variable and append endpoint
+      // Use the production URL from Vercel, or fallback to local for dev
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
       
       const res = await fetch(`${apiUrl}/api/contact`, {
@@ -23,6 +31,7 @@ export default function Contact() {
 
       if (!res.ok) throw new Error("Failed to send");
       
+      // On success, clear the form and show the success message
       setStatus("success");
       setFormData({ name: "", email: "", message: "", honeypot: "" });
     } catch (error) {
@@ -34,6 +43,7 @@ export default function Contact() {
   return (
     <div className="max-w-content mx-auto px-6 py-24 min-h-[70vh]">
       <div className="max-w-4xl">
+        {/* Page Header */}
         <span className="font-mono text-sm text-brown-light tracking-widest uppercase mb-4 block">
           08 — Contact
         </span>
@@ -45,19 +55,25 @@ export default function Contact() {
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-          {/* Form */}
+          
+          {/* Left Column: Contact Form */}
           <div>
             {status === "success" ? (
+              // Success State
               <div className="bg-accent/10 border border-accent text-accent p-6 rounded-lg">
                 <h3 className="font-serif text-xl mb-2">Message Sent</h3>
                 <p className="text-sm">Thank you for reaching out. I'll get back to you soon.</p>
-                <button onClick={() => setStatus("idle")} className="mt-4 text-sm font-mono underline underline-offset-4">
+                <button 
+                  onClick={() => setStatus("idle")} 
+                  className="mt-4 text-sm font-mono underline underline-offset-4 hover:text-brown-deep transition-colors"
+                >
                   Send another
                 </button>
               </div>
             ) : (
+              // Form State
               <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-                {/* Honeypot field (hidden from real users) */}
+                {/* Honeypot field: Hidden from real users, but bots will fill it out. */}
                 <input 
                   type="text" 
                   name="honeypot" 
@@ -66,6 +82,7 @@ export default function Contact() {
                   className="hidden" 
                   tabIndex={-1} 
                   autoComplete="off" 
+                  aria-hidden="true"
                 />
 
                 <div>
@@ -81,6 +98,7 @@ export default function Contact() {
                 
                 <div>
                   <label className="block font-mono text-xs uppercase tracking-wider text-brown-light mb-2">Email</label>
+                  {/* type="email" triggers built-in browser validation for email formats */}
                   <input 
                     type="email" 
                     required
@@ -109,18 +127,24 @@ export default function Contact() {
                   {status === "loading" ? "Sending..." : "Send Message"}
                 </button>
                 
+                {/* Error Message */}
                 {status === "error" && (
-                  <p className="text-red-500 text-sm font-mono mt-2">Something went wrong. Please try again.</p>
+                  <p className="text-red-500 text-sm font-mono mt-2" role="alert">
+                    Something went wrong. Please try again.
+                  </p>
                 )}
               </form>
             )}
           </div>
 
-          {/* Socials & Email */}
+          {/* Right Column: Socials & Direct Email */}
           <div className="flex flex-col gap-8">
             <div>
               <h3 className="font-mono text-xs uppercase tracking-wider text-brown-light mb-4">Direct Email</h3>
-              <a href="mailto:adityawaradkar2004@gmail.com" className="text-xl font-serif text-brown-deep hover:text-accent transition-colors">
+              <a 
+                href="mailto:adityawaradkar2004@gmail.com" 
+                className="text-xl font-serif text-brown-deep hover:text-accent transition-colors"
+              >
                 adityawaradkar2004@gmail.com
               </a>
             </div>
@@ -143,6 +167,7 @@ export default function Contact() {
               </div>
             </div>
           </div>
+          
         </div>
       </div>
     </div>

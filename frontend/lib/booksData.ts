@@ -6,8 +6,8 @@ export type Book = {
   author: string;
   status: "reading" | "finished";
   category: "technical" | "philosophy" | "psychology" | "fiction";
-  coverUrl?: string; // Added this
-  note: string;
+  coverUrl?: string;
+  summary: string; // Renamed from 'note' to 'summary'
 };
 
 export const booksData: Book[] = [
@@ -18,16 +18,16 @@ export const booksData: Book[] = [
     status: "reading",
     category: "psychology",
     coverUrl: "/images/books/psycho.jpg",
-    note: "A fascinating look at self-image and how the brain works like a servo-mechanism. It taught me that changing my internal self-image is the prerequisite for changing my external outcomes.",
+    summary: "A foundational psychology book that explores how the brain acts as a 'servo-mechanism' to achieve goals. It focuses on the concept of self-image and how altering your internal perception is key to changing your external reality.",
   },
-    {
+  {
     id: "subtle-art",
     title: "The Subtle Art of Not Giving a F*ck",
     author: "Mark Manson",
     status: "finished",
     category: "psychology",
     coverUrl: "/images/books/subtle-art.jpg",
-    note: "A refreshingly blunt take on self-help. It strips away the toxic positivity and reminds you that you only have a limited number of 'f*cks' to give, so you should spend them on things that actually matter. It shifted my perspective on what problems are worth solving.",
+    summary: "A counterintuitive self-help book that argues against constant positivity. It emphasizes accepting life's struggles and choosing which values and problems are actually worth caring about.",
   },
   {
     id: "almanack",
@@ -36,7 +36,7 @@ export const booksData: Book[] = [
     status: "finished",
     category: "philosophy",
     coverUrl: "/images/books/naval.jpg",
-    note: "A masterclass in leverage, wealth creation, and escaping the status game. Naval's philosophy on specific knowledge and compounding relationships shifted how I view my career.",
+    summary: "A curated collection of wisdom from entrepreneur Naval Ravikant. It covers topics like building specific knowledge, using leverage, creating wealth, and finding happiness through a philosophical lens.",
   },
   {
     id: "white-nights",
@@ -45,7 +45,7 @@ export const booksData: Book[] = [
     status: "finished",
     category: "fiction",
     coverUrl: "/images/books/whitenights.jpg",
-    note: "A beautiful, heartbreaking short story about isolation, unrequited love, and the fleeting nature of happiness. Dostoevsky captures the agonizing ecstasy of dreaming like no one else.",
+    summary: "A classic short story about a lonely dreamer who meets a young woman over four nights in St. Petersburg. It explores themes of isolation, unrequited love, and the fleeting nature of human connection.",
   },
   {
     id: "tuesdays-morrie",
@@ -54,7 +54,7 @@ export const booksData: Book[] = [
     status: "finished",
     category: "philosophy",
     coverUrl: "/images/books/morrie.jpg",
-    note: "A deeply moving memoir about life's most important lessons. It serves as a stark reminder to not get caught up in the trivialities of the world and to focus on love, forgiveness, and community.",
+    summary: "A memoir recounting the author's weekly visits to his former sociology professor, Morrie Schwartz, who is dying of ALS. The book captures their discussions on life, love, work, and death.",
   },
   {
     id: "meditations",
@@ -63,6 +63,6 @@ export const booksData: Book[] = [
     status: "finished",
     category: "philosophy",
     coverUrl: "/images/books/meditations.jpg",
-    note: "The definitive text on Stoicism. Aurelius wrote this for himself, not for an audience, making it incredibly raw. I return to it frequently to remind myself to focus only on what is within my control.",
+    summary: "The personal writings of Roman Emperor Marcus Aurelius. As a cornerstone of Stoic philosophy, it offers practical guidance on self-discipline, emotional resilience, and focusing only on what is within one's control.",
   }
 ];

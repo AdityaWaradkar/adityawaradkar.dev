@@ -31,6 +31,18 @@ export const topArtists = [
     link: "https://open.spotify.com/artist/7jy3rLJdDQY21OgRLCZ9sD",
     imageUrl: "/images/artists/foofighters.jpg"
   },
+  { 
+    name: "Pearl Jam", 
+    genre: "Grunge / Alternative Rock", 
+    link: "https://open.spotify.com/artist/1w5Kfo2jwwIPruYS2UWh56",
+    imageUrl: "/images/artists/pearljam.jpg" 
+  },
+  { 
+    name: "Guns N' Roses", 
+    genre: "Hard Rock", 
+    link: "https://open.spotify.com/artist/3qm84nBOXUEQ2vnTfUTTFC",
+    imageUrl: "/images/artists/gnr.jpg" 
+  },
 ];
 
 export const topAlbums = [
@@ -63,5 +75,17 @@ export const topAlbums = [
     artist: "Alice in Chains", 
     coverUrl: "/images/albums/5.jpg",
     link: "https://open.spotify.com/album/4FCoFSNIFhK36holxHWCnc" // Replace with actual link
+  },
+    { 
+    title: "Use Your Illusion I", 
+    artist: "Guns N' Roses", 
+    coverUrl: "/images/albums/6.jpg", // Ensure this image exists
+    link: "https://open.spotify.com/album/0CxPbTRARqKUYighiEY9Sz" 
+  },
+  { 
+    title: "The Dark Side of the Moon", 
+    artist: "Pink Floyd", 
+    coverUrl: "/images/albums/7.jpg", // Ensure this image exists
+    link: "https://open.spotify.com/album/4LH4d3cOWNNsVw41Gqt2kv" 
   },
 ];

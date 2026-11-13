@@ -1,3 +1,19 @@
+# Git files
+.git
+.gitignore
+
+# Docker files (no need to copy these into the image)
 Dockerfile
 .dockerignore
+
+# Local environment variables
+.env
+.env.local
+
+# Compiled Go binary (generated during build, no need to copy from local)
 main
+main.exe
+
+# OS generated files
+.DS_Store
+Thumbs.db

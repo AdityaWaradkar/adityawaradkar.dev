@@ -2,6 +2,7 @@ import { projectsData } from "@/lib/data";
 import Link from "next/link";
 import type { Metadata } from "next";
 
+// SEO Metadata for the Projects page
 export const metadata: Metadata = {
   title: "Projects",
   description: "Selected technical projects by Aditya Waradkar.",
@@ -10,6 +11,8 @@ export const metadata: Metadata = {
 export default function Projects() {
   return (
     <div className="max-w-content mx-auto px-6 py-24 min-h-[70vh]">
+      
+      {/* Page Header */}
       <span className="font-mono text-sm text-brown-mid tracking-widest uppercase font-semibold mb-4 block">
         03 — Projects
       </span>
@@ -17,14 +20,17 @@ export default function Projects() {
         Selected Work
       </h1>
 
+      {/* Projects Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {projectsData.map((project, index) => (
           <div 
             key={index} 
+            // If the project is featured, it spans both columns on desktop
             className={`group border border-brown-light/30 p-8 rounded-lg bg-cream hover:shadow-md transition-all flex flex-col ${
               project.featured ? "md:col-span-2" : "col-span-1"
             }`}
           >
+            {/* Title & Featured Badge */}
             <div className="flex justify-between items-start mb-4">
               <h2 className="text-2xl font-serif text-brown-deep group-hover:text-accent transition-colors">
                 {project.title}
@@ -36,10 +42,12 @@ export default function Projects() {
               )}
             </div>
             
+            {/* Project Description */}
             <p className="text-brown-mid mb-6 flex-grow leading-relaxed">
               {project.description}
             </p>
             
+            {/* Tech Stack Tags */}
             <div className="flex flex-wrap gap-2 mb-8">
               {project.tags.map((tag) => (
                 <span key={tag} className="text-xs font-mono text-brown-deep bg-brown-light/10 px-2 py-1 rounded">
@@ -48,9 +56,10 @@ export default function Projects() {
               ))}
             </div>
             
+            {/* Action Links */}
             <div className="flex gap-4 mt-auto">
               
-              {/* STRICTLY HIDDEN IF FALSE */}
+              {/* Live Demo Link (Only renders if liveDemo is strictly true) */}
               {project.liveDemo === true && (
                 <Link 
                   href={project.link} 
@@ -62,7 +71,7 @@ export default function Projects() {
                 </Link>
               )}
               
-              {/* GitHub Link - also check if the link is valid */}
+              {/* GitHub Link (Only renders if a valid URL exists) */}
               {project.github && project.github !== "#" && (
                 <Link 
                   href={project.github} 
