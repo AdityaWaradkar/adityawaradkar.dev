@@ -18,7 +18,7 @@ export default function Hero() {
           
           {/* Subline / Bio */}
           <p className="text-lg text-brown-mid max-w-md mb-10 leading-relaxed">
-            I’m a computer engineer who spends a lot of time working with cloud and DevOps, painting and sketching portraits, and listening to heavy metal. This is my corner of the internet for the things I build and create.
+            Computer engineer specializing in Cloud & DevOps, artist, and metalhead, and this is a collection of what I build and create.
           </p>
           
           {/* Call to Action Buttons */}
