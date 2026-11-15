@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import GrainOverlay from "@/components/GrainOverlay";
+import { Analytics } from '@vercel/analytics/next';
 
 // -----------------------------------------------------------------------------
 // Font Configuration
@@ -82,6 +83,7 @@ export default function RootLayout({
         </main>
         
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
