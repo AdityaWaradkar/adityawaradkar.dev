@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter, IBM_Plex_Mono } from "next/font/google";
-import dynamic from 'next/dynamic';
 import "./globals.css";
 
 import Navbar from "@/components/Navbar";
@@ -15,14 +14,6 @@ import GrainOverlay from "@/components/GrainOverlay";
 const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", display: 'swap' });
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: 'swap' });
 const ibmPlexMono = IBM_Plex_Mono({ weight: ["400", "500"], subsets: ["latin"], variable: "--font-ibm-plex-mono", display: 'swap' });
-
-// -----------------------------------------------------------------------------
-// Analytics Component (Loaded dynamically to prevent blocking initial page load)
-// -----------------------------------------------------------------------------
-const Analytics = dynamic(
-  () => import('@vercel/analytics/next').then((m) => m.Analytics),
-  { ssr: false }
-);
 
 // -----------------------------------------------------------------------------
 // SEO Metadata
@@ -91,9 +82,6 @@ export default function RootLayout({
         </main>
         
         <Footer />
-        
-        {/* Vercel Analytics */}
-        <Analytics /> 
         
       </body>
     </html>
